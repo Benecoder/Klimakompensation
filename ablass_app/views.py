@@ -58,3 +58,10 @@ class LogbuchListView(ListView):
 	def get_context_data(self):
 		context = super().get_context_data()
 		return context
+
+
+def load_before(request):
+	return render(request,'home.html')
+
+def load_after(request):
+	return render(request,'home.html')

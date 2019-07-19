@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 from django.views.generic.list import ListView
+from django.templatetags.static import static
+
 
 from .models import User,Antrag
 
@@ -60,8 +62,12 @@ class LogbuchListView(ListView):
 		return context
 
 
-def load_before(request):
-	return render(request,'home.html')
+def load_image(request):
 
-def load_after(request):
-	return render(request,'home.html')
+	type = request.GET.get('type',None)
+	if type == 'before':
+		data = {'url':static('images/before.jpg')}
+	if type == 'after':
+		data = {'url':static('images/after.jpg')}
+	return JsonResponse(data)
+

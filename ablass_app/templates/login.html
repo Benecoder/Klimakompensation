@@ -11,40 +11,27 @@
     <title>Klimakompensation</title>
   </head>
   <body>
+    
     <div class="p-3 mb-2 bg-success text-white" >
       <h1 class="text-center">
         Die Klima Kompensation
       </h1>
-      {% if user.is_authenticated %}
-        username:<br>
-        <div class="col-sm">
-          <h1><span class="badge badge-primary">{{ user.username }}</span></h1>
-        </div>
-      {% else %}
-        <h1><span class="badge badge-secondary">Logged out</span></h1>
-      {% endif %}
     </div>
     <div class="container">
-      {% for user in object_list %}
-        <div class="row"><strong>{{user.username}}</strong></div>
-        {% for antrag in user.all_antraege %}
-        <div class="row">
-          <div class="col-sm">
-            {{antrag.kilometers}}km geflogen
-          </div>
-          <div class="col-sm">
-            {{antrag.tco2}}t CO<sub>2</sub> äquivalent
-          </div>
-          <div class="col-sm">
-            Schaden im Wert von {{antrag.price}}&euro;
-          </div>
+      <form action={% url "login_request" %} method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type ="text" class="form-control" name="username" aria-label="Username" aria-describedby="username-input">
         </div>
-        {% endfor %}
-      {% empty %}
-        <li class="list-group-item">No articles yet</li>
-      {% endfor %}
-      </ul>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" name="password">
+        </div>
+        <button type="submit" class="btn btn-primary">Let's Go!</button>
+      </form>
     </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

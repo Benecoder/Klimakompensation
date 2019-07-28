@@ -3,16 +3,17 @@ from django.http import HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 from django.views.generic.list import ListView
 from django.templatetags.static import static
+from django.contrib.auth import authenticate,login,logout
 
-
-from .models import User,Antrag
+from django.contrib.auth.models import User
+from .models import Antrag
 
 # Create your views here.
 def index(request):
 	"""
 	View for the home page
 	"""
-	return render(request,'home.html')
+	return render(request,'home.html',{})
 
 
 def info(request):
@@ -27,24 +28,36 @@ def antrag(request):
 	"""
 	return render(request,'antrag.html')
 
+def login_page(request):
+	"""
+	View for the login
+	"""
+	return render(request,'login.html')
+
+def login_request(request):
+	u_name = request.POST.get('username')
+	p_word = request.POST.get('password')
+
+	user = authenticate(request,username=u_name,password=p_word)
+	if user is not None:
+		login(request,user)
+		return HttpResponseRedirect(reverse('index'))
+	else:
+		return HttpResponseRedirect(reverse('login_request'))
+
+def logout_request(request):
+	logout(request)
+	return HttpResponseRedirect(reverse('index'))
+
+
 def ablassen(request):
 	"""
 	Handels ablass forms
 	"""
-	firstname = request.POST.get('firstname',False)
-	lastname = request.POST.get('lastname',False)
 	kilometers = request.POST.get('kilometers',False)
 
-	# finds the matching user
-	matches = User.objects.filter(firstname=firstname,lastname=lastname)
-	if len(matches) == 0:
-		user = User(firstname=firstname,lastname=lastname)
-		user.save()
-	else:
-		user = matches.first()
-
 	#creates the Antrag object
-	new_antrag = Antrag(user = user,kilometers= int(kilometers))
+	new_antrag = Antrag(user = request.user,kilometers= int(kilometers))
 	new_antrag.save()
 
 

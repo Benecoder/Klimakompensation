@@ -18,23 +18,48 @@
   		<h1 class="text-center">
   			Die Klima Kompensation
   		</h1>
-  		<p class="text-right">
-  			Jeder muss mal verbrauchen.<br> Damit das vergolten werden kann, wird hier Ablass geleistet.
-  		</p>
+      <div class="row">
+        <div class="col-sm">
+      {% if user.is_authenticated %}
+        username:<br>
+        <div class="col-sm">
+          <h1><span class="badge badge-primary">{{ user.username }}</span></h1>
+        </div>
+      {% else %}
+        <h1><span class="badge badge-secondary">Logged out</span></h1>
+      {% endif %}
+      </div>
+        <div class="col-sm">
+          <p class="text-right">
+            Jeder muss mal verbrauchen.<br> Damit das vergolten werden kann, wird hier Ablass geleistet.
+          </p>
+        </div>
+      </div>
   	</div>
+
+
 
   
 	<div class="container">
 		<div class="row">
 			<div class="col-sm">
-				<a class="nav-link active" href=/info/>Info</a>
+				<a class="nav-link active" href={% url "info"%}>Info</a>
 			</div>
 			<div class="col-sm">
-        <a class="nav-link active" href=/antrag/>Ablass Antrag</a>
+        <a class="nav-link active" href={% url "antrag"%}>Ablass Antrag</a>
 			</div>
       <div class="col-sm">
-        <a class="nav-link active" href=/logbuch/>Logbuch</a>
+        <a class="nav-link active" href={% url "logbuch"%}>Logbuch</a>
       </div>
+      {% if user.is_authenticated %}
+        <div class="col-sm">
+          <a class="nav-link active" href={% url "logout_request" %}>Logout</a>
+        </div>
+      {% else %}
+        <div class="col-sm">
+          <a class="nav-link active" href={% url "login_page"%}>Login</a>
+        </div>
+      {% endif %}
 		</div>
     <div class="row">
       <div class="col-sm">
@@ -49,6 +74,7 @@
   	<div class="p-3 mb-2 bg-white text-white">
   		<img src=/static/images/background.jpg class="img-fluid mx-auto d-block" id="front_image" alt="Responsive image">
   	</div>
+
 
 
 

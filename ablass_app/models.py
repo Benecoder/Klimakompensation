@@ -1,13 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-class User(models.Model):
-	firstname = models.CharField(max_length=200)
-	lastname = models.CharField(max_length=200)
-	def __str__(self):
-		return self.firstname+' '+self.lastname
-	def all_children(self):
-		return self.antrag_set.all()
+def all_antraege(self):
+	return self.antrag_set.all()
+
+User.all_antraege = all_antraege
 
 class Antrag(models.Model):
 	user = models.ForeignKey(User,on_delete=models.CASCADE)
